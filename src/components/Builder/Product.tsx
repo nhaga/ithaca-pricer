@@ -1,11 +1,10 @@
-import React from 'react'
+// @ts-nocheck
 import { useRadio, useRadioGroup, Box, HStack } from '@chakra-ui/react'
 
-// @ts-ignore
 function RadioCard(props) {
-    const { getInputProps, getRadioProps } = useRadio(props)    
-    const input = getInputProps()
-    const checkbox = getRadioProps()
+  const { getInputProps, getRadioProps } = useRadio(props)
+  const input = getInputProps()
+  const checkbox = getRadioProps()
 
   return (
     <Box as='label'>
@@ -27,34 +26,34 @@ function RadioCard(props) {
         {props.children}
       </Box>
     </Box>
-    )
+  )
 }
 // @ts-ignore
 function Product(props) {
-    const options = ['F', 'BP', 'P', 'C', 'BC']
-  
-    const { getRootProps, getRadioProps } = useRadioGroup({
-      name: 'framework',
-      defaultValue: props.leg.product,
-      onChange: (value) => props.updateAttribute(props.leg.id, "product", value),
-    })
-  
-    const group = getRootProps()
-  
-    return (
-      <HStack {...group}>
-        {options.map((value) => {
-          const radio = getRadioProps({ value })
-          return (
-            <RadioCard key={value} {...radio}>
-              {value}
-            </RadioCard>
-          )
-        })}
-      </HStack>
-    )
-  }
-  
+  const options = ['F', 'BP', 'P', 'C', 'BC']
+
+  const { getRootProps, getRadioProps } = useRadioGroup({
+    name: 'framework',
+    defaultValue: props.leg.product,
+    onChange: (value) => props.updateAttribute(props.leg.id, "product", value),
+  })
+
+  const group = getRootProps()
+
+  return (
+    <HStack {...group}>
+      {options.map((value) => {
+        const radio = getRadioProps({ value })
+        return (
+          <RadioCard key={value} {...radio}>
+            {value}
+          </RadioCard>
+        )
+      })}
+    </HStack>
+  )
+}
+
 
 
 export default Product

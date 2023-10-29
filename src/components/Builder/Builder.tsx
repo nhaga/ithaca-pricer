@@ -1,25 +1,19 @@
+// @ts-nocheck
+
 import { Select, Button, Box, Grid, GridItem, TableContainer, Table, TableCaption, Thead, Tr, Th, Tbody } from '@chakra-ui/react'
 import { products } from './products'
 import { useEffect, useState } from 'react'
 import { BuilderRow } from './BuilderRow'
 import { Plot } from '../Plot/Plot'
 import { estimateOrderPayoff } from '../../payoffs'
-
-
-const productMap = {
-  "F": "forward",
-  "C": "call",
-  "BC": "BinaryCall",
-  "BP": "BinaryPut",
-  "P": "Put"
-}
+type Payoff = Record<string, number>;
 
 
 function Builder() {
   const [legs, setLegs] = useState([])
   const [payoff, setPayoff] = useState([])
 
-  const updateAttribute = (index, attribute, value) => {
+  const updateAttribute = (index: number, attribute: string, value: number) => {
     const newLegs = [...legs]
     if (attribute == 'long') {
       let record = legs.find((leg) => leg.id === index)
@@ -38,11 +32,11 @@ function Builder() {
     setLegs([...legs, { id: self.crypto.randomUUID(), long: true, quantity: 1, product: 'F', strike: 1500, premium: 0 }])
   }
 
-  const removeLeg = (index) => {
+  const removeLeg = (index: number) => {
     setLegs(legs.filter((leg) => leg.id !== index))
   }
 
-  const changeProduct = (product) => {
+  const changeProduct = (product: string) => {
     if (product) {
       setLegs(products[product])
     } else {
@@ -50,8 +44,9 @@ function Builder() {
     }
   }
 
+
   useEffect(() => {
-    const newPayoff = estimateOrderPayoff(legs)
+    const newPayoff: Payoff[] = estimateOrderPayoff(legs)
     setPayoff(newPayoff)
   }, [legs])
 
@@ -93,7 +88,7 @@ function Builder() {
                 </Tr>
               </Thead>
               <Tbody>
-                {legs.map(leg => <BuilderRow
+                {legs && legs.map(leg => <BuilderRow
                   key={leg.id}
                   leg={leg}
                   removeLeg={removeLeg}

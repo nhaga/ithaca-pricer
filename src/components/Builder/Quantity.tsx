@@ -1,4 +1,4 @@
-import React from 'react'
+// @ts-nocheck
 import { useNumberInput, HStack, Button, Input } from '@chakra-ui/react'
 
 export function Quantity(props) {

@@ -1,7 +1,16 @@
+// @ts-nocheck
 type TypeBoolean = boolean // true for call, false for put
-type TypeUnion = 'call' | 'put'
+type TypeUnion = string //'call' | 'put'
 type Underlying = Price // current price of underlying
 type Vega = number // dPrice/dSigma → dSigma +1 means +100%
+type Price = number
+type Delta = number
+type Gamma = number
+type Theta = number
+type Rate = number // risk free rate
+type Time = number // time to expiry in years
+type Sigma = number // volatility
+type Strike = number
 
 export interface Option {
     price: Price

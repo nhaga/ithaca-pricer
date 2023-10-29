@@ -1,7 +1,10 @@
+// @ts-nocheck
+
 import { Tr, Td, Select, Switch, Button } from '@chakra-ui/react'
 import { Quantity } from './Quantity';
 import Product from './Product';
 import Premium from './Premium';
+
 
 export function BuilderRow(props) {
   const strikes = [1500, 1600, 1700, 1800, 1900, 2000]
