@@ -9,6 +9,7 @@ import {
   Select,
   Switch,
   HStack,
+  SimpleGrid,
 } from '@chakra-ui/react'
 import { BlackScholes } from "../ithacaPricer";
 
@@ -27,6 +28,7 @@ const CustomInput = (props: InputProps) => {
     <HStack spacing={4} align="center">
       <FormLabel w="40">{props.title}</FormLabel>
       <Input
+        w="20"
         type='text'
         onChange={(event: Event) => props.fn((event.target as HTMLInputElement).value)}
         value={props.value}
@@ -79,7 +81,7 @@ function Pricer() {
 
   return (
     <>
-      <HStack bg={'gray.50'} px="6" spacing={"20"}>
+      <SimpleGrid px="6" columns={{ md: 1, lg: 2 }}>
 
         <Box as={'form'} >
           <Stack spacing={4}>
@@ -87,7 +89,7 @@ function Pricer() {
               <FormLabel htmlFor='email-alerts' mb='0'>
                 Call
               </FormLabel>
-              <Switch defaultValue='optionType' onChange={() => setOptionType(optionType == 'call' ? 'put' : 'call')} />
+              <Switch colorScheme="green" defaultValue={optionType} onChange={() => setOptionType(optionType == 'call' ? 'put' : 'call')} />
               <FormLabel htmlFor='email-alerts' mb='0' ml='5'>
                 Put
               </FormLabel>
@@ -100,6 +102,7 @@ function Pricer() {
             <HStack spacing={4} align="center">
               <FormLabel w="40">Expiry</FormLabel>
               <Select
+                w="20"
                 placeholder='Select expiry'
                 defaultValue={expiry} onChange={(val: any) => setExpiry(val.target.value)}
                 bg={'gray.100'}
@@ -119,7 +122,7 @@ function Pricer() {
           </Stack>
         </Box>
 
-        <Box as={'form'} mt={10} w="52">
+        <Box as={'form'} mt={{ sm: 0, lg: 10 }} w="52">
           <Stack spacing={2}>
 
             <HStack spacing={4} align="center">
@@ -144,7 +147,7 @@ function Pricer() {
             </HStack>
           </Stack>
         </Box>
-      </HStack>
+      </SimpleGrid>
     </>
 
   )

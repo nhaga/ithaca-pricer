@@ -6,15 +6,18 @@ import {
   Heading,
   Container,
   SimpleGrid,
+  Tabs, TabList, TabPanels, Tab, TabPanel
 } from '@chakra-ui/react'
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 
 import Pricer from './components/Pricer';
-import Builder from './components/Builder/Builder';
+import { Legs } from './components/Legs/Legs'
+import ColorChanger from './components/ColorChanger';
 
 export default function App() {
-    return (
+  return (
     <Box position={'relative'}>
+      <ColorChanger />
+
       <Container
         as={SimpleGrid}
         maxW={'7xl'}
@@ -23,31 +26,26 @@ export default function App() {
         py={{ base: 10, sm: 20, lg: 32 }}>
         <Stack spacing={{ base: 10, md: 20 }}>
 
-        <Heading
-          lineHeight={1.1}
-          fontSize={{ base: '3xl', sm: '4xl', md: '5xl', lg: '6xl' }}>
-          Ithaca Tests
-        </Heading>
-        <Tabs>
-        <TabList>
-          <Tab>Builder</Tab>
-          <Tab>Pricer</Tab>
-        </TabList>
+          <Heading
+            lineHeight={1.1}
+            fontSize={{ base: '3xl', sm: '4xl', md: '5xl', lg: '6xl' }}>
+            Ithaca Tests
+          </Heading>
+          <Tabs colorScheme='green'>
+            <TabList>
+              <Tab>Legs</Tab>
+              <Tab>Pricer</Tab>
+            </TabList>
 
-        <TabPanels py="10">
-          <TabPanel>
-            <Builder />
-
-          </TabPanel>
-          <TabPanel >
-            <Pricer />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-
-        
-
-
+            <TabPanels py="10">
+              <TabPanel>
+                <Legs />
+              </TabPanel>
+              <TabPanel >
+                <Pricer />
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
         </Stack>
       </Container>
     </Box>
