@@ -10,6 +10,9 @@ import {
   Switch,
   HStack,
   SimpleGrid,
+  Divider,
+  Heading,
+  Text
 } from '@chakra-ui/react'
 import { BlackScholes } from "../ithacaPricer";
 
@@ -52,6 +55,8 @@ function Pricer() {
   const [expiry, setExpiry] = useState('1')
   const [sigma, setSigma] = useState(0.485)
   const [rate] = useState(0.0)
+  const [price, setPrice] = useState(0.0)
+  const [calculatedSigma, setCalculatedSigma] = useState(0.0)
 
   const [option, setOption] = useState(
     blackScholes.option({
@@ -73,17 +78,29 @@ function Pricer() {
       type: optionType,
       underlying,
     });
+
     setOption(newOption)
-
-
-
   }, [optionType, underlying, strike, size, expiry, sigma, rate])
+
+
+
+  useEffect(() => {
+    const newSigma = blackScholes.sigma({
+      rate,
+      strike,
+      price,
+      time: parseInt(expiry) / 52,
+      type: optionType,
+      underlying,
+    });
+    setCalculatedSigma(newSigma ? newSigma : 0.0)
+  }, [optionType, price, underlying, strike, size, expiry, rate])
 
   return (
     <>
       <SimpleGrid px="6" columns={{ md: 1, lg: 2 }}>
 
-        <Box as={'form'} >
+        <Box>
           <Stack spacing={4}>
             <FormControl display='flex' alignItems='center'>
               <FormLabel htmlFor='email-alerts' mb='0'>
@@ -148,6 +165,26 @@ function Pricer() {
           </Stack>
         </Box>
       </SimpleGrid>
+
+      <Divider my={6} />
+
+      <Box px="6" >
+        <Heading fontSize={"xl"}>
+          Implied Volatility
+        </Heading>
+        <Stack spacing={2} mt="4">
+
+          <CustomInput title='Price' value={price} fn={setPrice} />
+          <HStack spacing={4} align="center">
+            <FormLabel w="40">Vega</FormLabel>
+            <Input w="20" border={0}
+              type='text'
+              readOnly value={calculatedSigma} />
+          </HStack>
+        </Stack>
+
+
+      </Box>
     </>
 
   )

@@ -17,8 +17,6 @@ describe("option", () => {
       // https://www.math.drexel.edu/~pg/fin/VanillaCalculator.html
   
 
-
-
       
       it("call", () => {
           const option = blackScholes.option({

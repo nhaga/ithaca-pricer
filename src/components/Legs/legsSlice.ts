@@ -52,7 +52,7 @@ const initialState: LegsState = {
         })
       },
       updateProduct: (state, action: PayloadAction<string>) => {
-        state.legs = state.products[action.payload]
+        action.payload ? state.legs = state.products[action.payload] : state.legs = []
       },
       clearLegs: (state) => {
         state.legs = []

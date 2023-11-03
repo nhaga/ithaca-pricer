@@ -1,10 +1,9 @@
-// import { LineChart, Line, CartesianGrid, XAxis, YAxis, , Legend } from 'recharts';
 type Payoff = Record<string, number>;
 
 import {
     AreaChart,
     Area,
-    Tooltip
+    Tooltip,
 } from "recharts";
 
 
@@ -54,36 +53,29 @@ export function Plot({ data }: { data: Payoff[] }) {
                     bottom: 0
                 }}
             >
-                {/* <CartesianGrid strokeDasharray="3 3" /> */}
-                {/* <XAxis dataKey="x" /> */}
-                {/* <YAxis /> */}
-                <Tooltip />
                 <defs>
-                    <linearGradient id="splitColor" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset={off} stopColor="green" stopOpacity={0.3} />
-                        <stop offset={off} stopColor="red" stopOpacity={0.3} />
+                    <linearGradient id='fillGradient' x1='0' y1='0' x2='0' y2='1'>
+                        <stop offset='5%' stopColor='#5ee192' stopOpacity={0.4} />
+                        <stop offset={off} stopColor='#8884d8' stopOpacity={0} />
+                        <stop offset='95%' stopColor='#FF3F57' stopOpacity={0.4} />
+                    </linearGradient>
+                    <linearGradient id='lineGradient' x1='0' y1='0' x2='0' y2='1'>
+                        <stop offset='8%' stopColor='#5ee192' stopOpacity={0.3} />
+                        <stop offset={off} stopColor='#fff' stopOpacity={0.8} />
+                        <stop offset='92%' stopColor='#FF3F57' stopOpacity={0.3} />
                     </linearGradient>
                 </defs>
-                <Area
-                    type="monotone"
-                    dataKey="total"
-                    stroke="#5ee192" strokeWidth={4}
-                    fill="url(#splitColor)"
-                    fillOpacity={0.4}
-                />
-            </AreaChart>
-            {/* <LineChart width={400} height={400} data={data}>
-                <Line dataKey="total" dot={false} stroke="#5ee192" strokeWidth={4} />
-                {data.length ? Object.keys(data[0]).filter(item => !["x", "total"].includes(item)).map((key, idx) =>
-                    <Line key={key} dataKey={key} dot={false} stroke={colors[idx]} strokeDasharray="3 4 5 2" />
-                ) : <></>}
-
-                <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-                <XAxis dataKey="x" />
-                <YAxis />
                 <Tooltip />
-                <Legend verticalAlign="top" height={36} />
-            </LineChart> */}
+                <Area
+                    type="linear"
+                    stroke='url(#lineGradient)'
+                    dataKey="total"
+                    strokeWidth={3}
+                    fill="url(#fillGradient)"
+                />
+                {/* <ReferenceLine y={0} stroke='white' /> */}
+
+            </AreaChart>
         </>
     )
 }

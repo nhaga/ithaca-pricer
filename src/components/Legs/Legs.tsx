@@ -43,7 +43,7 @@ export function Legs() {
 
     return (
         <>
-            <Box w="52">
+            <Box w="52" mb="6">
                 <Select placeholder="Select product..." onChange={(val) => dispatch(updateProduct(val.target.value))}>
                     {products.map((product) => <option key={product} value={product}>{product}</option>)}
                 </Select>
