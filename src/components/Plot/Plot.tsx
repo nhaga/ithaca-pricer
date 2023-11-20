@@ -54,16 +54,24 @@ export function Plot({ data }: { data: Payoff[] }) {
                 }}
             >
                 <defs>
-                    <linearGradient id='fillGradient' x1='0' y1='0' x2='0' y2='1'>
-                        <stop offset='5%' stopColor='#5ee192' stopOpacity={0.4} />
-                        <stop offset={off} stopColor='#8884d8' stopOpacity={0} />
-                        <stop offset='95%' stopColor='#FF3F57' stopOpacity={0.4} />
-                    </linearGradient>
-                    <linearGradient id='lineGradient' x1='0' y1='0' x2='0' y2='1'>
-                        <stop offset='8%' stopColor='#5ee192' stopOpacity={0.3} />
-                        <stop offset={off} stopColor='#fff' stopOpacity={0.8} />
-                        <stop offset='92%' stopColor='#FF3F57' stopOpacity={0.3} />
-                    </linearGradient>
+                <linearGradient id='fillGradient' x1='0' y1='0' x2='0' y2='1'>
+                <stop offset='5%' stopColor='#5ee192' stopOpacity={0.4} />
+                <stop offset={off} stopColor='#8884d8' stopOpacity={0} />
+                <stop offset='95%' stopColor='#FF3F57' stopOpacity={0.4} />
+              </linearGradient>
+
+              <linearGradient id='lineGradient' x1='0' y1='0' x2='0' y2='1'>
+                <stop offset='2%' stopColor='#5ee192' stopOpacity={0.1} />
+                <stop offset='40%' stopColor='#5ee192' stopOpacity={0.3} />
+                <stop offset={off} stopColor='#fff' stopOpacity={0.6} />
+                <stop offset='75%' stopColor='#FF3F57' stopOpacity={0.3} />
+                <stop offset='98%' stopColor='#FF3F57' stopOpacity={0.1} />
+              </linearGradient>
+              <linearGradient id='referenceLine' x1='0' y1='0' x2='0' y2='1'>
+                <stop offset='8%' stopColor='#5ee192' stopOpacity={0.3} />
+                <stop offset='92%' stopColor='#FF3F57' stopOpacity={0.3} />
+              </linearGradient>
+
                 </defs>
                 <Tooltip />
                 <Area

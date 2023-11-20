@@ -26,7 +26,7 @@ function FundlockDeposit({ address }: RowProps) {
     address: fundLock,
     abi: FundLock.abi,
     functionName: 'deposit',
-    args: [address, parseUnits('10', res?.decimals as number)],
+    args: [address, parseUnits('500', res?.decimals as number)],
   })
 
 

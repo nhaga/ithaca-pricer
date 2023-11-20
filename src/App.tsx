@@ -5,7 +5,7 @@ import {
   Stack,
   Container,
   SimpleGrid,
-  Tabs, TabList, TabPanels, Tab, TabPanel
+  Tabs, TabList, TabPanels, Tab, TabPanel, useColorModeValue
 } from '@chakra-ui/react'
 
 import Nav from './components/Nav';
@@ -15,10 +15,14 @@ import CrosschainDeposit from './components/CrosschainDeposit/CrosschainDeposit'
 import Collateral from './components/Collateral/Collateral';
 import SDK from './components/SDK/SDK';
 import Dashboard from './components/Dashboard/Dashboard';
+import Analytics from './components/Analytics/Analytics';
+import EstimatePayoffs from './components/EstimatePayoffs';
+
 
 export default function App() {
+  const bg = useColorModeValue('white', 'gray.900');
   return (
-    <>
+    <Box bg={bg} h="100%">
       <Nav />
       <Box position={'relative'}>
 
@@ -28,6 +32,11 @@ export default function App() {
           columns={{ base: 1, md: 1 }}
           spacing={{ base: 10, lg: 32 }}
           py={10}>
+
+
+
+
+
           <Stack spacing={{ base: 10, md: 20 }}>
 
             <Tabs colorScheme='green'>
@@ -35,6 +44,8 @@ export default function App() {
                 <Tab>Legs</Tab>
                 <Tab>Pricer</Tab>
                 <Tab>Dashboard</Tab>
+                <Tab>Analytics</Tab>
+                <Tab>Payoffs</Tab>
                 <Tab>Cross chain Deposits</Tab>
                 <Tab>Collateral Yield</Tab>
                 <Tab>SDK</Tab>
@@ -51,6 +62,12 @@ export default function App() {
                   <Dashboard />
                 </TabPanel>
                 <TabPanel>
+                  <Analytics />
+                </TabPanel>
+                <TabPanel>
+                  <EstimatePayoffs />
+                </TabPanel>
+                <TabPanel>
                   <CrosschainDeposit />
                 </TabPanel>
                 <TabPanel>
@@ -64,7 +81,7 @@ export default function App() {
           </Stack>
         </Container>
       </Box>
-    </>
+    </Box>
 
   )
 }

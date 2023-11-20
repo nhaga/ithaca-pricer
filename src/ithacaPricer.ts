@@ -18,9 +18,9 @@ export interface Option {
     gamma: Gamma
     theta: Theta
     vega: Vega
-  }
+}
 
-  export class BlackScholes {
+export class BlackScholes {
 
     public constructor(args?: {
         priceToSigmaAccuracy?: number

@@ -1,13 +1,3 @@
-
-// @ts-nocheck
-
-//
-// interface IthacaOptionLeg {
-//     contractId: number;
-//     side: 'BUY' | 'SELL';
-//     quantity: number;
-// }
-
 interface OptionLeg {
     product: string;
     strike: number;
@@ -15,10 +5,6 @@ interface OptionLeg {
     quantity: number;
     long: boolean;
   }
-
-// interface Payoff<T> {
-//     [key: string]: T;
-//   }
 
 type Payoff = Record<string, number>;
 
@@ -40,7 +26,7 @@ export function estimateOrderPayoff(legs: OptionLeg[]): Payoff[] {
       legs.forEach((leg, idx) => {
         const side = leg.long ? 1 : -1;
         const premium = leg.product != 'F' ?  -leg.premium * side : 0;
-        const intrinsicValue = side * payoffFunctions[leg.product](price, leg.strike) + premium;
+        const intrinsicValue = side * payoffFunctions[leg.product as keyof typeof payoffFunctions](price, leg.strike) + premium;
         payoff[`leg${idx+1}`] = intrinsicValue * leg.quantity;
         payoff.total += intrinsicValue * leg.quantity
       });

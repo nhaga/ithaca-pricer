@@ -14,6 +14,7 @@ import LegProduct from "./LegProduct"
 import LegStrike from "./LegStrike"
 import { Plot } from '../Plot/Plot'
 import { Leg } from "./legsSlice"
+import RespLineChart from "../Plot/Responsive"
 
 import { estimateOrderPayoff } from '../../payoffs'
 type Payoff = Record<string, number>;
@@ -49,7 +50,9 @@ export function Legs() {
                 </Select>
 
             </Box>
+
             <Grid templateColumns={{ sm: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }}>
+
                 <GridItem rowSpan={1} colSpan={2}>
                     <Table size='sm'>
                         <TableCaption>
@@ -95,6 +98,7 @@ export function Legs() {
                 </GridItem>
 
                 <GridItem rowSpan={1} colSpan={1}>
+                    <RespLineChart payoff={payoff}/>
                     <Plot data={payoff} />
                 </GridItem>
 
