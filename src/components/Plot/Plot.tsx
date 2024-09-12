@@ -1,23 +1,36 @@
-type Payoff = Record<string, number>;
-
 import {
-    AreaChart,
-    Area,
     Tooltip,
+    XAxis,
+    LineChart,
+    YAxis,
+    Legend,
+    Line
 } from "recharts";
+import { Checkbox, Slider, SliderTrack, SliderFilledTrack, SliderThumb, Box, SliderMark, Flex} from '@chakra-ui/react'
+import { useState } from 'react'
 
 
+type Payoff = Record<string, number>;
 
 export function Plot({ data }: { data: Payoff[] }) {
 
-    // const colors = [
-    //     "rgba(195, 40, 96, 0.2)",
-    //     "rgba(255, 172, 100, 0.2)",
-    //     "rgba(88, 188, 116, 0.2)",
-    //     "#F5FBEF",
-    //     "#92AD94",
-    //     "#748B75",
-    // ]
+    const [showLegs, setShowLegs] = useState(true)
+    const [sliderValue, setSliderValue] = useState(7)
+
+    const labelStyles = {
+        mt: '2',
+        ml: '-2.5',
+        fontSize: 'sm',
+      }
+
+    const colors = [
+        "rgba(195, 40, 96, 0.2)",
+        "rgba(255, 172, 100, 0.2)",
+        "rgba(88, 188, 116, 0.2)",
+        "#F5FBEF",
+        "#92AD94",
+        "#748B75",
+    ]
 
 
     const gradientOffset = () => {
@@ -37,54 +50,61 @@ export function Plot({ data }: { data: Payoff[] }) {
 
     const off = gradientOffset();
 
+    const legKeys = data.length && Object.keys(data[0]).filter(key => key.includes("@") )
+    const totalKeys = data.length && Object.keys(data[0]).filter(key => key.includes("total") )
+
+    function extractIntegers(arr) {
+        return arr.map(str => {
+          const match = str.match(/\d+/);
+          return match ? parseInt(match[0]) : null;
+        });
+      }
+
+    const expiries = data.length && extractIntegers(totalKeys);
+
+
+
 
 
 
     return (
         <>
-            <AreaChart
-                width={500}
-                height={400}
-                data={data}
-                margin={{
-                    top: 10,
-                    right: 30,
-                    left: 0,
-                    bottom: 0
-                }}
-            >
-                <defs>
-                <linearGradient id='fillGradient' x1='0' y1='0' x2='0' y2='1'>
-                <stop offset='5%' stopColor='#5ee192' stopOpacity={0.4} />
-                <stop offset={off} stopColor='#8884d8' stopOpacity={0} />
-                <stop offset='95%' stopColor='#FF3F57' stopOpacity={0.4} />
-              </linearGradient>
 
-              <linearGradient id='lineGradient' x1='0' y1='0' x2='0' y2='1'>
-                <stop offset='2%' stopColor='#5ee192' stopOpacity={0.1} />
-                <stop offset='40%' stopColor='#5ee192' stopOpacity={0.3} />
-                <stop offset={off} stopColor='#fff' stopOpacity={0.6} />
-                <stop offset='75%' stopColor='#FF3F57' stopOpacity={0.3} />
-                <stop offset='98%' stopColor='#FF3F57' stopOpacity={0.1} />
-              </linearGradient>
-              <linearGradient id='referenceLine' x1='0' y1='0' x2='0' y2='1'>
-                <stop offset='8%' stopColor='#5ee192' stopOpacity={0.3} />
-                <stop offset='92%' stopColor='#FF3F57' stopOpacity={0.3} />
-              </linearGradient>
 
-                </defs>
-                <Tooltip />
-                <Area
-                    type="linear"
-                    stroke='url(#lineGradient)'
-                    dataKey="total"
-                    strokeWidth={3}
-                    fill="url(#fillGradient)"
-                />
-                {/* <ReferenceLine y={0} stroke='white' /> */}
 
-            </AreaChart>
+
+        <LineChart
+          width={500}
+          height={300}
+          data={data}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          {/* <CartesianGrid strokeDasharray="3 3" /> */}
+          <XAxis dataKey="x" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+        
+          { showLegs && data.length && legKeys.map(key => <Line key={key} type="monotone" dataKey={key} stroke="#82ca9d"  dot={false} /> )}
+          {data.length && totalKeys.map(key => 
+          <Line key={key} type="monotone" dataKey={key} stroke="#8884d8"  strokeWidth={3}  dot={false} /> 
+          )}
+          
+        </LineChart>
+
+        <Checkbox 
+                    isChecked={showLegs}
+                    onChange={() => setShowLegs(!showLegs)}
+        
+        >Show Legs</Checkbox>
+
+
+
         </>
     )
 }
-

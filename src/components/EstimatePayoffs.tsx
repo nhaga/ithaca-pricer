@@ -1,3 +1,6 @@
+import { Box, SimpleGrid } from '@chakra-ui/react';
+import { Plot } from './Plot/Plot'
+// import { estimateOrderPayoff } from '../payoffs'
 
 /*
 Leg Data:
@@ -23,79 +26,27 @@ interface OptionLeg {
     payoff: string;
     economics: Economics;
     tradeable: boolean;
+    premium: number;
   }
 
 
 const data: OptionLeg[] = [{
     'contractId': 231110027,
-    'quantity': '100',
-    'side': 'BUY',
+    'quantity': '1',
+    'side': 'SELL',
     'payoff': 'Call',
+    'premium': 2.5,
     'economics': {
         'currencyPair': 'WETH/USDC',
         'expiry': 20231110,
-        'strike': 1500.0,
+        'strike': 1800.0,
         'priceCurrency': 'USDC',
         'qtyCurrency': 'WETH'
     },
     'tradeable': true
 },
-{
-    'contractId': 231110029,
-    'quantity': '100',
-    'side': 'BUY',
-    'payoff': 'Put',
-    'economics': {
-        'currencyPair': 'WETH/USDC',
-        'expiry': 20231110,
-        'strike': 1500.0,
-        'priceCurrency': 'USDC',
-        'qtyCurrency': 'WETH'
-    },
-    'tradeable': true
-},
-{
-    'contractId': 231110029,
-    'quantity': '100',
-    'side': 'BUY',
-    'payoff': 'Put',
-    'economics': {
-        'currencyPair': 'WETH/USDC',
-        'expiry': 20231110,
-        'strike': 1500.0,
-        'priceCurrency': 'USDC',
-        'qtyCurrency': 'WETH'
-    },
-    'tradeable': true
-},
-{
-    'contractId': 231110027,
-    'quantity': '100',
-    'side': 'BUY',
-    'payoff': 'Call',
-    'economics': {
-        'currencyPair': 'WETH/USDC',
-        'expiry': 20231110,
-        'strike': 1500.0,
-        'priceCurrency': 'USDC',
-        'qtyCurrency': 'WETH'
-    },
-    'tradeable': true
-},
-{
-    'contractId': 231110027,
-    'quantity': '100',
-    'side': 'BUY',
-    'payoff': 'Call',
-    'economics': {
-        'currencyPair': 'WETH/USDC',
-        'expiry': 20231110,
-        'strike': 1500.0,
-        'priceCurrency': 'USDC',
-        'qtyCurrency': 'WETH'
-    },
-    'tradeable': true
-}]
+
+]
 
 
 
@@ -103,30 +54,58 @@ type Payoff = Record<string, number>;
 
 const range = (start: number, stop: number, step: number = 10) => Array(Math.ceil((stop - start) / step)).fill(start).map((x, y) => x + y * step)
 
-function estimateOrderPayoff(legs: OptionLeg[]): Payoff[] {
-    const payoffFunctions = {
+
+export type PayoffMap = Record<string, number>;
+
+const getZero = (payoffs: PayoffMap[]) => {
+    const start = payoffs.find(i => i.total < 0)
+    const end = payoffs.filter(i => i.total > 0).at(0)
+    if (start && end) {
+      const x = start.x - start.total * (end.x-start.x) / (end.total-start.total)
+      return {x, total: 0}
+    } 
+  }
+  
+
+
+function estimateOrderPayoff(legs: OptionLeg[], daysToExpiry: number = 0): Payoff[] {
+
+    const flatVol = 0.6
+
+
+    const payoffFunctions = (daysToExpiry == 0) ? {
         'Call': (price: number, strike: number) => Math.max(0, price - strike),
         'Put': (price: number, strike: number) => Math.max(0, strike - price),
         'BinaryCall': (price: number, strike: number) => price > strike ? 1 : 0,
         'BinaryPut': (price: number, strike: number) => price < strike ? 1 : 0,
         'Forward': (price: number, strike: number) => price - strike,
+    } : {
+      'Call': (price: number, strike: number) => Math.max(0, price - strike),
+      'Put': (price: number, strike: number) => Math.max(0, strike - price),
+      'BinaryCall': (price: number, strike: number) => price > strike ? 1 : 0,
+      'BinaryPut': (price: number, strike: number) => price < strike ? 1 : 0,
+      'Forward': (price: number, strike: number) => price - strike,
+
+
     }
 
-    const prices = range(1300, 2000, 10)
+    const prices = range(1798, 1804, 1)
 
     const payoffs = prices.map(price => {
       const payoff: Payoff = { x: price, total: 0 };
       legs.forEach((leg, idx) => {
         const side = leg.side == "BUY" ? 1 : -1;
-        // const premium = leg.payoff != 'Forward' ?  -leg.premium * side : 0;
-        const premium = 0;
+        const premium = leg.payoff != 'Forward' ?  -leg.premium * side : 0;
         const intrinsicValue = side * payoffFunctions[leg.payoff as keyof typeof payoffFunctions](price, leg.economics.strike) + premium;
         payoff[`leg${idx+1}`] = intrinsicValue * parseInt(leg.quantity);
         payoff.total += intrinsicValue * parseInt(leg.quantity)
       });
       return payoff;
     });
-    return payoffs;
+
+    payoffs.push(getZero(payoffs))
+
+    return payoffs.sort((a,b) => a.x - b.x);
 }
 
 
@@ -160,7 +139,22 @@ function EstimatePayoffs() {
         </tbody>
     </table>
     <hr></hr>
-    {JSON.stringify(payoffs)}
+    <SimpleGrid columns={2} spacing={10}>
+    <Box fontSize={"xs"}>
+    <pre>
+    {JSON.stringify(payoffs, null, "\t")}
+
+    </pre>
+
+    </Box>
+    <Box w="96" h="96">
+        asdas
+    <Plot data={payoffs} />
+
+    </Box>
+
+
+    </SimpleGrid>
     
     </>
   )

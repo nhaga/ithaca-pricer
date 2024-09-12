@@ -1,11 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { RootState } from "../../store/store"
 import { products } from "./products"
+import axios from 'axios'
 
 
 export interface Leg {
     id: string;
     product: string;
+    expiry: number;
     strike: number;
     premium: number;
     quantity: number;
@@ -27,6 +29,7 @@ const initialState: LegsState = {
     products: products,
   }
 
+
   export const legsSlice = createSlice({
     name: "legs",
     initialState,
@@ -42,12 +45,14 @@ const initialState: LegsState = {
       },
       updateLeg: (state, action: PayloadAction<Leg>) => {
         state.legs = state.legs.map((leg) => {
+
           if (leg.id === action.payload.id) {
             return {
               ...leg,
               ...action.payload,
             }
           }
+          
           return leg
         })
       },

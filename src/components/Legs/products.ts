@@ -1,10 +1,14 @@
 export const products = {
+    "Straddle": [
+        { id: "0", long: true, quantity: 1, product: 'C', strike: 2000, premium: 20 },
+        { id: "1", long: true, quantity: 1, product: 'P', strike: 2000, premium: 20 },
+    ],
     "Bet": [
-        { id: "0", long: true, quantity: 100, product: 'BC', strike: 1700, premium: 4 },
-        { id: "1", long: false, quantity: 100, product: 'BC', strike: 1900, premium: 2 },
+        { id: "0", long: true, quantity: 100, product: 'BC', strike: 2000, premium: 4 },
+        { id: "1", long: false, quantity: 100, product: 'BC', strike: 2100, premium: 2 },
     ],
     "Earn": [
-        { id: "0", long: false, quantity: 1, product: 'P', strike: 1700, premium: 4 },
+        { id: "0", long: false, quantity: 1, product: 'P', strike: 2100, premium: 40 },
 
     ],
     'No Gain no Pain': [

@@ -4,17 +4,16 @@ import { useNumberInput, HStack, Button, Input } from '@chakra-ui/react'
 import { Show } from '@chakra-ui/react'
 
 
-export default function LegQuantity(props: Leg) {
+export default function LegPremium(props: Leg) {
     const dispatch = useAppDispatch()
     const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } =
         useNumberInput({
-            step: 1,
-            defaultValue: 1,
-            min: 1,
-            max: 50000,
-            precision: 0,
+            step: 0.5,
+            defaultValue: 0.5,
+            min: 0,
+            max: 10,
             isReadOnly: false,
-            onChange: (value) => dispatch(updateLeg({ ...props, quantity: parseInt(value) }))
+            onChange: (value) => dispatch(updateLeg({ ...props, premium: parseInt(value) }))
         })
 
     const inc = getIncrementButtonProps()
@@ -27,7 +26,7 @@ export default function LegQuantity(props: Leg) {
             <Show above='lg'>
                 <Button size='xs' {...inc}>+</Button>
             </Show>
-            <Input w="75px" size='sm' {...input} value={props.quantity} />
+            <Input minW='50px' size='sm' {...input} value={props.premium} />
             <Show above='lg'>
                 <Button size='xs' {...dec}>-</Button>
             </Show>
